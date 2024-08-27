@@ -1,29 +1,3 @@
-# apiDiscordStatus
-
-Ce projet est une API pour gérer le statut Discord des utilisateurs.
-
-## Installation
-
-1. Clonez ce dépôt sur votre machine locale, ou utiliser le lien ci dessous: https://api.zaphir.me/discord/info/:idDiscord 
-2. Assurez-vous d'avoir Node.js installé.
-3. Exécutez `npm install` pour installer les dépendances.
-
-## Configuration
-
-1. Modifiez le fichier config.json avec les instructions donné 
-
-
-## Utilisation
-
-1. Exécutez `npm start` pour démarrer le serveur.
-2. Accédez à `http://localhost:1412/discord/info/your_id_discord` pour accéder à l'API.
-
-## Contribuer
-
-Les contributions sont les bienvenues! N'hésitez pas à ouvrir une pull request.
-
-## Information dans l'api
-
 This project is an API for managing Discord user status.
 
 ## Installation
