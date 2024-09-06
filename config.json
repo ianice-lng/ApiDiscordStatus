@@ -1,5 +1,5 @@
-  {
-    "tokenDiscord": "YOUR_DISCORD_BOT_TOKEN",
-    "clientId": "YOUR_DISCORD_BOT_ID",
-    "tokenTwitch": "YOUR_TWITCH_TOKEN"
-  }
+{
+  "tokenDiscord": "YOUR_DISCORD_BOT_TOKEN",
+  "clientId": "YOUR_DISCORD_BOT_ID",
+  "tokenTwitch": "YOUR_TWITCH_TOKEN"
+}

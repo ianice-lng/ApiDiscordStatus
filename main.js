@@ -48,6 +48,7 @@ async function myStatus(id) {
                 status: "",
                 avatar: "",
                 banner: "",
+                avatarDecoration: "",
                 statusMusic: {
                         name: "No music",
                         author: "No author",
@@ -64,6 +65,7 @@ async function myStatus(id) {
                 username: "",
                 avatar: "",
                 banner: "",
+                avatarDecoration: "",
         }
         let myUser;
         let member;
@@ -71,15 +73,18 @@ async function myStatus(id) {
         myUser = await client.users.fetch(id, { force: true });
         const avatarURL = myUser.displayAvatarURL({ dynamic: true });
         const bannerURL = myUser.bannerURL({ dynamic: true, size: 2048 });
+        const avatarDecoration = myUser.avatarDecorationURL({ dynamic: true });
+        console.log(myUser.avatarDecorationURL({ dynamic: true }));
         infoPre.avatar = avatarURL;
         infoPre.banner = bannerURL;
-        
+        infoPre.avatarDecoration = avatarDecoration;
         infoPre.username = myUser.username;
         infoPre.globalName = myUser.globalName;
         member;
         for (const guild of client.guilds.cache.values()) {
             try {
                 member = await guild.members.fetch(id);
+                
                 if (member) break;
             } catch (e) {
                 // If the member is not found in this guild, continue to the next one
@@ -97,9 +102,6 @@ async function myStatus(id) {
                 
                 switch (activity.type) {
                         case 0:
-                                if(activity.name === "Code"){
-                                        console.log(activity);
-                                }
                                 // Fallback image handling
                                 if (activity.assets) {
                                         i++;
@@ -170,6 +172,7 @@ async function myStatus(id) {
         const bannerURL = myUser.bannerURL({ dynamic: true, size: 2048 });
         info.avatar = avatarURL;
         info.banner = bannerURL;
+        info.avatarDecoration = myUser.avatarDecorationURL({ dynamic: true });
         
         info.username = myUser.username;
         info.globalName = myUser.globalName;
