@@ -13,12 +13,6 @@ const client = new Client({
 });
 
 
-client.on(Events.PresenceUpdate, async (oldPresence, newPresence) => {
-        console.log(newPresence)
-
-
-})
-
 // Fonction pour obtenir la couverture d'un jeu depuis Twitch
 async function getGameCover(gameName) {
         try {
@@ -45,46 +39,48 @@ async function getGameCover(gameName) {
 
 // Fonction pour obtenir les informations utilisateur
 async function myStatus(id) {
+
         const info = {
                 globalName: "",
                 username: "",
-                status: "",
                 avatar: "",
                 banner: "",
                 avatarDecoration: "",
-                statusMusic: {
-                        name: "No music",
-                        author: "No author",
-                        cover: "No cover",
-                },
-                statusPerso: {
-                        name: "",
-                        emoji: "",
-                },
-                statusGames: [],
+
         };
 
         try {
                 // Récupération de l'utilisateur
                 const myUser = await client.users.fetch(id, { force: true });
-                const member = client.guilds.cache
-                    .map(guild => guild.members.cache.get(id))
-                    .find(member => member?.presence);
+                const guild = await client.guilds.cache.get("1278072220899479572");
+                const member = await guild.members.fetch(id);
 
-                if (!member) {
-                        console.log("Membre introuvable ou hors ligne.");
-                        return info;
-                }
-
-                // Ajoute les informations de base
                 info.globalName = myUser.globalName;
                 info.username = myUser.username;
                 info.avatar = myUser.displayAvatarURL({ dynamic: true });
                 info.banner = myUser.bannerURL({ dynamic: true, size: 2048 });
                 info.avatarDecoration = myUser.avatarDecorationURL({ dynamic: true });
-                info.status = member.presence?.status || 'offline';
+                if (!member) {
+                        return info;
+                }
 
-                console.log(member.presence.activities);
+                // Ajoute les informations de présence
+                info.nitro = false
+                if(member?.premiumSinceTimestamp === null) {
+                        info.nitro = true
+                }
+                info.status = member.presence?.status || 'offline';
+                info.statusMusic = {
+                        name: "No music",
+                            author: "No author",
+                            cover: "No cover",
+                }
+                info.statusPerso = {
+                        name: "",
+                            emoji: "",
+                }
+                info.statusGames = []
+
 
                 member.presence.activities.forEach(activity => {
                         switch (activity.type) {
@@ -107,7 +103,7 @@ async function myStatus(id) {
                                                         largeTextImage: activity.assets?.largeText || "No large text",
                                                         smallTextImage: activity.assets?.smallText || "No small text",
                                                 },
-                                                timeStamp: activity.createdTimestamp,
+                                                timeStamp: activity.timestamps?.start || Date.now(),
                                         });
                                         break;
 
@@ -149,7 +145,10 @@ const port = 1412;
 const app = express();
 
 app.get('/discord/info/:id', async (req, res) => {
-        const id = req.params.id;
+        let id = req.params.id;
+        if(id === "zaphir"){
+                id = "423549049958825984";
+        }
         res.setHeader('Access-Control-Allow-Origin', '*');
         res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
